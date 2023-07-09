@@ -12,3 +12,9 @@ Unfortunately, the Windows version of Python does not support the required `curs
 
 - run `pip install -r requirements.txt` from the command line inside the directory OR
 - Just run `pip install windows-curses`
+
+## References
+
+- [Python Curses](https://docs.python.org/3/howto/curses.html)
+- [NCurses](http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/NCURSES-Programming-HOWTO.html#WHATIS)
+- [Curses Programming in Python](https://www.devdungeon.com/content/curses-programming-python)
