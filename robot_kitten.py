@@ -38,7 +38,6 @@ DEBUG = True
 
 # Important game-state globals, do not change!
 CHOSEN_POSITIONS = []
-GAME_WON = False
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
@@ -48,19 +47,18 @@ class GameObject:
     is_kitten = False
     description = ""
     character = ''
-    def __init__(self, pos_x, pos_y, is_kitten_input, description_input, character_input):
+    color = 0
+    def __init__(self, pos_x, pos_y, is_kitten_input, description_input, character_input, color_input):
         self.x = pos_x
         self.y = pos_y
         self.is_kitten = is_kitten_input
         self.description = description_input
         self.character = character_input
-
-    def debug_report_status(self):
-        print(f"X = {self.x}, Y = {self.y}, character = {self.character}, is_kitten = {self.is_kitten}")
-        print(f"Description = {self.description}\n")
+        self.color = color_input
     
-    def display_message(self):
+    def debug_report(self):
         if DEBUG == True:
+            print(f"X = {self.x}, Y = {self.y}, character = {self.character}, is_kitten = {self.is_kitten}, color = {self.color}")
             print(f"Display Message: {self.description}\n")
     
     def get_interaction(self):
@@ -104,7 +102,6 @@ class Player:
             self.x = temp_x
             self.y = temp_y
         else:
-            result[1].display_message()
             interaction = result[1].get_interaction()
             return interaction
 
@@ -116,14 +113,14 @@ def generate_objects():
         new_position = find_valid_coordinate()
         description = random.choice(DESCRIPTIONS)
         DESCRIPTIONS.remove(description)
-        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], False, description, generate_graphic()))
+        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], False, description, generate_graphic(), random.randint(1,6)))
 
     # Add Kitten
     new_position = find_valid_coordinate()
     if DEBUG == True:
-        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, "K"))
+        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, "K", random.randint(1,6)))
     else:
-        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, generate_graphic()))
+        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, generate_graphic(), random.randint(1,6)))
 
 
 # TODO: Ensure that control characters cannot be selected
@@ -143,27 +140,20 @@ def find_valid_coordinate():
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
-def gameloop(stdscr):
-    player = Player()
+def gameloop(stdscr, game_window, title_window, player):
     game_on = True
-    title_window = curses.newwin(2, MAX_X,0,0)
-    # title_window.addstr(0,0, "Robot Finds Kitten")
-    game_window = curses.newwin(MAX_Y, BOARD_X+1,2,0)
-    # game_window.box()
-    game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
-    update_title(title_window, "")
-    # draw_board(game_window, player)
     # game_window.refresh()
     # title_window.refresh()
-
+    # draw_board(game_window, player)
     while game_on == True:
         input = stdscr.getch()
         if input == ord('q'):
             game_on = False
         else:
+            update_message(title_window, "")
             result = player.move_player(input)
             if result is not None:
-                update_title(title_window, result[0])
+                update_message(title_window, result[0])
                 # If kitten found, you win!
                 if result[1] == True:
                     curses.napms(4000)
@@ -172,7 +162,7 @@ def gameloop(stdscr):
             draw_board(game_window, player)
 
 
-def update_title(title_window, string):
+def update_message(title_window, string):
     title_window.clear()
     title_window.addstr(0,0, "Robot Finds Kitten")
     title_window.addstr(1,0, string)
@@ -198,58 +188,28 @@ def draw_board(game_window, player):
     game_window.refresh()
 
 
-    # for obj in GAME_OBJECTS:
-    #     stdscr.addstr(obj.y, obj.x, obj.character)
-
 def collision_check(x, y):
     for obj in GAME_OBJECTS:
         if obj.x == x and obj.y == y:
-            obj.display_message()
+            obj.debug_report()
             return (True, obj)
     return (False, None)
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
-# def init(stdscr):
-#     curses.noecho()
-#     curses.cbreak()
-#     stdscr.keypad(True)
-#     stdscr.clear()
-
-# def cleanup(stdscr):
-#     curses.nocbreak()
-#     stdscr.keypad(False)
-#     curses.echo()
-#     curses.endwin()
-
 def main(stdscr):
     if NUM_OBJECTS > len(DESCRIPTIONS):
         print("Error! Too many objects and not enough descriptions. Either reduce NUM_OBJECTS or add more descriptions to DESCRIPTIONS")
         return
-    
+    # Setup  
+    player = Player()
     generate_objects()
-    # if DEBUG == True:
-    #     for obj in GAME_OBJECTS:
-    #         obj.debug_report_status()
-    # stdscr = curses.initscr()
-    # stdscr = "nothing"
-    gameloop(stdscr)
+    curses.curs_set(0)
+    title_window = curses.newwin(2, MAX_X,0,0)
+    game_window = curses.newwin(MAX_Y, BOARD_X+1,2,0)
+    game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
+    update_message(title_window, "")
+    gameloop(stdscr, game_window, title_window, player)
     curses.endwin()
 
 curses.wrapper(main)
-
-
-
-
-
-
-    # begin_x = 20; begin_y = 7
-    # height = 5; width = 40
-    # win = curses.newwin(height, width, begin_y, begin_x)   
-    # stdscr.addstr(0, 0, "Current mode: Typing mode", curses.A_REVERSE)
-    # stdscr.addstr(0, 0, "This string gets printed at position (0, 0)")
-    # stdscr.addstr(3, 1, "Try Russian text: Привет")  # Python 3 required for unicode
-    # stdscr.addstr(4, 4, "X")
-    # stdscr.addch(5, 5, "Y")
-    # stdscr.refresh()
-    # curses.napms(3000)       

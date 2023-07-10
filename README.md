@@ -21,6 +21,7 @@ Unfortunately, the Windows version of Python does not support the required `curs
 
 - Hide the objects and map from player so they have to search in the dark
 - Add a turn counter
+- Add ASCII art kitty win screen
 
 ## References
 
