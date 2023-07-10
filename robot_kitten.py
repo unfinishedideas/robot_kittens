@@ -24,7 +24,7 @@ DESCRIPTIONS = [
     "This is a very expensive microphone", 
     "That's a drumset. Ba-dum tish!", 
     "Congratulations, you've found yourself :)", 
-    "Oh no the Flying Spaghetti  Monster! RUN!", 
+    "Oh no, the Flying Spaghetti Monster! RUN!", 
     "This block contains a lawsuit from Nintendo of America", 
     "It's Radioactive Man. Up and atom!"
 ]
@@ -60,7 +60,8 @@ class GameObject:
         print(f"Description = {self.description}\n")
     
     def display_message(self):
-        print(f"Display Message: {self.description}\n")
+        if DEBUG == True:
+            print(f"Display Message: {self.description}\n")
     
     def get_interaction(self):
         return(self.description, self.is_kitten)
@@ -119,7 +120,10 @@ def generate_objects():
 
     # Add Kitten
     new_position = find_valid_coordinate()
-    GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, generate_graphic()))
+    if DEBUG == True:
+        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, "K"))
+    else:
+        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, generate_graphic()))
 
 
 # TODO: Ensure that control characters cannot be selected
@@ -143,23 +147,36 @@ def gameloop(stdscr):
     player = Player()
     game_on = True
     title_window = curses.newwin(2, MAX_X,0,0)
-    title_window.addstr(0,0, "Robot Finds Kitten")
+    # title_window.addstr(0,0, "Robot Finds Kitten")
     game_window = curses.newwin(MAX_Y, BOARD_X+1,2,0)
-    game_window.box()
+    # game_window.box()
+    game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
+    update_title(title_window, "")
+    # draw_board(game_window, player)
+    # game_window.refresh()
+    # title_window.refresh()
+
     while game_on == True:
         input = stdscr.getch()
         if input == ord('q'):
             game_on = False
         else:
-            # if GAME_WON == True:
-            #     curses.napms(4000)
-            #     break
             result = player.move_player(input)
             if result is not None:
-                title_window.addstr(1,0, result[0])
+                update_title(title_window, result[0])
+                # If kitten found, you win!
+                if result[1] == True:
+                    curses.napms(4000)
+                    game_on = False
 
             draw_board(game_window, player)
-            title_window.refresh()
+
+
+def update_title(title_window, string):
+    title_window.clear()
+    title_window.addstr(0,0, "Robot Finds Kitten")
+    title_window.addstr(1,0, string)
+    title_window.refresh()
 
 
 def draw_board(game_window, player):
