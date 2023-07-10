@@ -9,7 +9,8 @@ import curses
 import random
 
 # Change these values to alter the game
-MAX_X = 42
+# MAX_X = 42
+MAX_X = 100
 MAX_Y = 24
 BOARD_X = 40
 BOARD_Y = 22
@@ -60,6 +61,9 @@ class GameObject:
     
     def display_message(self):
         print(f"Display Message: {self.description}\n")
+    
+    def get_interaction(self):
+        return(self.description, self.is_kitten)
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
@@ -84,14 +88,14 @@ class Player:
             temp_x += 1
 
         # Check for oob
-        if temp_x < 0:
-            temp_x = 0
-        elif temp_x > MAX_X:
-            temp_x = MAX_X
-        if temp_y < 0:
-            temp_y = 0
-        elif temp_y > MAX_Y:
-            temp_y = MAX_Y
+        if temp_x < 1:
+            temp_x = 1
+        elif temp_x > BOARD_X - 1:
+            temp_x = BOARD_X - 1
+        if temp_y < 1:
+            temp_y = 1
+        elif temp_y > BOARD_Y -1:
+            temp_y = BOARD_Y - 1
 
         # Check for object collision
         result = collision_check(temp_x, temp_y)
@@ -100,8 +104,8 @@ class Player:
             self.y = temp_y
         else:
             result[1].display_message()
-            if result[1].is_kitten == True:
-                GAME_WON = True
+            interaction = result[1].get_interaction()
+            return interaction
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
@@ -127,8 +131,8 @@ def generate_graphic():
 
 def find_valid_coordinate():
     while True:
-        temp_x = random.randint(1, BOARD_X)
-        temp_y = random.randint(1, BOARD_Y)
+        temp_x = random.randint(1, BOARD_X -1)
+        temp_y = random.randint(1, BOARD_Y - 1)
         if (temp_x, temp_y) not in CHOSEN_POSITIONS:
             CHOSEN_POSITIONS.append((temp_x, temp_y))
             return (temp_x, temp_y)
@@ -140,17 +144,20 @@ def gameloop(stdscr):
     game_on = True
     title_window = curses.newwin(2, MAX_X,0,0)
     title_window.addstr(0,0, "Robot Finds Kitten")
-    game_window = curses.newwin(MAX_Y, MAX_X,2,0)
+    game_window = curses.newwin(MAX_Y, BOARD_X+1,2,0)
     game_window.box()
     while game_on == True:
         input = stdscr.getch()
         if input == ord('q'):
             game_on = False
         else:
-            if GAME_WON == True:
-                curses.napms(4000)
-                break
-            player.move_player(input)
+            # if GAME_WON == True:
+            #     curses.napms(4000)
+            #     break
+            result = player.move_player(input)
+            if result is not None:
+                title_window.addstr(1,0, result[0])
+
             draw_board(game_window, player)
             title_window.refresh()
 
