@@ -137,16 +137,14 @@ def gameloop(stdscr):
     draw_board(stdscr, player)
     while game_on == True:
         input = stdscr.getch()
-        draw_board(stdscr, player)
         if input == ord('q'):
             game_on = False
         else:
-            break
-            draw_board(stdscr, player)
-            player.move_player(input)
             if GAME_WON == True:
                 curses.napms(4000)
                 break
+            player.move_player(input)
+            draw_board(stdscr, player)
 
     # begin_x = 20; begin_y = 7
     # height = 5; width = 40
