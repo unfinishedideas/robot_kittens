@@ -9,8 +9,10 @@ import curses
 import random
 
 # Change these values to alter the game
-MAX_X = 20
-MAX_Y = 20
+MAX_X = 42
+MAX_Y = 24
+BOARD_X = 40
+BOARD_Y = 22
 NUM_OBJECTS = 5
 GAME_OBJECTS = []
 DESCRIPTIONS = [
@@ -26,6 +28,7 @@ DESCRIPTIONS = [
     "It's Radioactive Man. Up and atom!"
 ]
 KITTEN_DESCRIPTION = "Hooray! You've found the Kitten. Congratulations on completing the game successfully"
+ROBOT_GRAPHIC = '#'
 KEY_UP = 'w'
 KEY_DOWN = 's'
 KEY_LEFT = 'a'
@@ -56,7 +59,7 @@ class GameObject:
         print(f"Description = {self.description}\n")
     
     def display_message(self):
-        print(f"We will replace this with curses code soon! Here's the description field {self.description}\n")
+        print(f"Display Message: {self.description}\n")
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
@@ -117,14 +120,15 @@ def generate_objects():
 
 # TODO: Ensure that control characters cannot be selected
 def generate_graphic():
-    rand = random.randint(0, 10000)
-    return chr(rand)
+    # rand = random.randint(0, 10000)
+    # return chr(rand)
+    return 'O'
 
 
 def find_valid_coordinate():
     while True:
-        temp_x = random.randint(0, MAX_X)
-        temp_y = random.randint(0, MAX_Y)
+        temp_x = random.randint(1, BOARD_X)
+        temp_y = random.randint(1, BOARD_Y)
         if (temp_x, temp_y) not in CHOSEN_POSITIONS:
             CHOSEN_POSITIONS.append((temp_x, temp_y))
             return (temp_x, temp_y)
@@ -134,7 +138,10 @@ def find_valid_coordinate():
 def gameloop(stdscr):
     player = Player()
     game_on = True
-    draw_board(stdscr, player)
+    title_window = curses.newwin(2, MAX_X,0,0)
+    title_window.addstr(0,0, "Robot Finds Kitten")
+    game_window = curses.newwin(MAX_Y, MAX_X,2,0)
+    game_window.box()
     while game_on == True:
         input = stdscr.getch()
         if input == ord('q'):
@@ -144,35 +151,27 @@ def gameloop(stdscr):
                 curses.napms(4000)
                 break
             player.move_player(input)
-            draw_board(stdscr, player)
+            draw_board(game_window, player)
+            title_window.refresh()
 
-    # begin_x = 20; begin_y = 7
-    # height = 5; width = 40
-    # win = curses.newwin(height, width, begin_y, begin_x)   
-    # stdscr.addstr(0, 0, "Current mode: Typing mode", curses.A_REVERSE)
-    # stdscr.addstr(0, 0, "This string gets printed at position (0, 0)")
-    # stdscr.addstr(3, 1, "Try Russian text: Привет")  # Python 3 required for unicode
-    # stdscr.addstr(4, 4, "X")
-    # stdscr.addch(5, 5, "Y")
-    # stdscr.refresh()
-    # curses.napms(3000)        
 
-def draw_board(stdscr, player):
-    for i in range(MAX_Y):
-        for j in range(MAX_X):
+def draw_board(game_window, player):
+    for i in range(1, BOARD_Y):
+        for j in range(1, BOARD_X):
             # check for player at coord
             if player.x == j and player.y == i:
-                stdscr.addstr(i,j,'O')
+                game_window.addstr(i,j,ROBOT_GRAPHIC, curses.A_BLINK)
             else:
                 # check for object at coord
                 found = False
                 for obj in GAME_OBJECTS:
                     if obj.x == j and obj.y == i:
-                        stdscr.addstr(i,j, obj.character)
+                        game_window.addstr(i,j, obj.character)
                         found = True
                         break
                 if found == False:
-                    stdscr.addstr(i, j, '.')
+                    game_window.addstr(i, j, '.')
+    game_window.refresh()
 
 
     # for obj in GAME_OBJECTS:
@@ -199,18 +198,34 @@ def collision_check(x, y):
 #     curses.echo()
 #     curses.endwin()
 
-def main():
+def main(stdscr):
     if NUM_OBJECTS > len(DESCRIPTIONS):
         print("Error! Too many objects and not enough descriptions. Either reduce NUM_OBJECTS or add more descriptions to DESCRIPTIONS")
         return
     
     generate_objects()
-    if DEBUG == True:
-        for obj in GAME_OBJECTS:
-            obj.debug_report_status()
-    stdscr = curses.initscr()
-    my_window = curses.newwin(MAX_Y, MAX_X, 0, 0)
+    # if DEBUG == True:
+    #     for obj in GAME_OBJECTS:
+    #         obj.debug_report_status()
+    # stdscr = curses.initscr()
+    # stdscr = "nothing"
     gameloop(stdscr)
     curses.endwin()
 
-main()
+curses.wrapper(main)
+
+
+
+
+
+
+    # begin_x = 20; begin_y = 7
+    # height = 5; width = 40
+    # win = curses.newwin(height, width, begin_y, begin_x)   
+    # stdscr.addstr(0, 0, "Current mode: Typing mode", curses.A_REVERSE)
+    # stdscr.addstr(0, 0, "This string gets printed at position (0, 0)")
+    # stdscr.addstr(3, 1, "Try Russian text: Привет")  # Python 3 required for unicode
+    # stdscr.addstr(4, 4, "X")
+    # stdscr.addch(5, 5, "Y")
+    # stdscr.refresh()
+    # curses.napms(3000)       
