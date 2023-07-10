@@ -9,8 +9,8 @@ import curses
 import random
 
 # Change these values to alter the game
-MAX_X = 10
-MAX_Y = 10
+MAX_X = 20
+MAX_Y = 20
 NUM_OBJECTS = 5
 GAME_OBJECTS = []
 DESCRIPTIONS = [
@@ -134,13 +134,15 @@ def find_valid_coordinate():
 def gameloop(stdscr):
     player = Player()
     game_on = True
+    draw_board(stdscr, player)
     while game_on == True:
         input = stdscr.getch()
+        draw_board(stdscr, player)
         if input == ord('q'):
             game_on = False
-            break
         else:
-            draw_board()
+            break
+            draw_board(stdscr, player)
             player.move_player(input)
             if GAME_WON == True:
                 curses.napms(4000)
@@ -157,8 +159,26 @@ def gameloop(stdscr):
     # stdscr.refresh()
     # curses.napms(3000)        
 
-def draw_board():
-    print("DRAWWW")
+def draw_board(stdscr, player):
+    for i in range(MAX_Y):
+        for j in range(MAX_X):
+            # check for player at coord
+            if player.x == j and player.y == i:
+                stdscr.addstr(i,j,'O')
+            else:
+                # check for object at coord
+                found = False
+                for obj in GAME_OBJECTS:
+                    if obj.x == j and obj.y == i:
+                        stdscr.addstr(i,j, obj.character)
+                        found = True
+                        break
+                if found == False:
+                    stdscr.addstr(i, j, '.')
+
+
+    # for obj in GAME_OBJECTS:
+    #     stdscr.addstr(obj.y, obj.x, obj.character)
 
 def collision_check(x, y):
     for obj in GAME_OBJECTS:
@@ -191,6 +211,7 @@ def main():
         for obj in GAME_OBJECTS:
             obj.debug_report_status()
     stdscr = curses.initscr()
+    my_window = curses.newwin(MAX_Y, MAX_X, 0, 0)
     gameloop(stdscr)
     curses.endwin()
 

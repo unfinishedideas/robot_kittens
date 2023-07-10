@@ -6,6 +6,10 @@
 
 ---
 
+## Controls
+
+Use W,A,S,D to move, and try to find the kitten!
+
 ## Setup
 
 Unfortunately, the Windows version of Python does not support the required `curses` library by default. If you are on Windows, you will need to install windows-curses to do so simply do the following:
