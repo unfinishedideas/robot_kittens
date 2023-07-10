@@ -29,6 +29,7 @@ DESCRIPTIONS = [
     "It's Radioactive Man. Up and atom!"
 ]
 KITTEN_DESCRIPTION = "Hooray! You've found the Kitten. Congratulations on completing the game successfully"
+GAME_OVER_TEXT = "GAME OVER. You ran out of turns :("
 ROBOT_GRAPHIC = '#'
 KEY_UP = 'w'
 KEY_DOWN = 's'
@@ -145,26 +146,33 @@ def gameloop(stdscr, game_window, title_window, player):
     # game_window.refresh()
     # title_window.refresh()
     # draw_board(game_window, player)
+    turns_left = 100
+
     while game_on == True:
         input = stdscr.getch()
         if input == ord('q'):
             game_on = False
         else:
-            update_message(title_window, "")
+            update_message(title_window, "", turns_left)
             result = player.move_player(input)
             if result is not None:
-                update_message(title_window, result[0])
+                update_message(title_window, result[0], turns_left)
                 # If kitten found, you win!
                 if result[1] == True:
                     curses.napms(4000)
                     game_on = False
 
             draw_board(game_window, player)
+            turns_left -= 1
+            if turns_left < 0:
+                update_message(title_window, GAME_OVER_TEXT, 0)
+                curses.napms(4000)
+                game_on = False
 
 
-def update_message(title_window, string):
-    title_window.clear()
-    title_window.addstr(0,0, "Robot Finds Kitten")
+def update_message(title_window, string, turns_left):
+    title_window.erase()
+    title_window.addstr(0,0, f"Robot Finds Kitten. Turns left [{turns_left}]")
     title_window.addstr(1,0, string)
     title_window.refresh()
 
@@ -208,7 +216,7 @@ def main(stdscr):
     title_window = curses.newwin(2, MAX_X,0,0)
     game_window = curses.newwin(MAX_Y, BOARD_X+1,2,0)
     game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
-    update_message(title_window, "")
+    update_message(title_window, "", 0)
     gameloop(stdscr, game_window, title_window, player)
     curses.endwin()
 
