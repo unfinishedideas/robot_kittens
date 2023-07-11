@@ -54,7 +54,7 @@ To increase the stakes a bit and add to the strategic element I was going for; a
 
 ### ***Question 4: How confident are you that your game is (relatively) bug-free?***
 
-I am fairly certain it has a great deal of poorly written code. So confidence level: low! It appears to work in my playtests though.
+I am fairly certain it is mostly bug free based on my testing. Though I do believe it is created in a way that is not the most efficient.
 
 <br>
 

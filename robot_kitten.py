@@ -31,15 +31,17 @@ DESCRIPTIONS = [
 ]
 KITTEN_DESCRIPTION = "Hooray! You've found the Kitten. Congratulations on completing the game successfully"
 GAME_OVER_TEXT = "GAME OVER. You ran out of turns :("
+WELCOME_MESSAGE = "Welcome! You are the #. Use WASD to find the kitten! Press q at any time to quit"
 ROBOT_GRAPHIC = '#'
 KEY_UP = 'w'
 KEY_DOWN = 's'
 KEY_LEFT = 'a'
 KEY_RIGHT = 'd'
-DEBUG = True
+DEBUG = False
 
 # Important game-state globals, do not change!
 CHOSEN_POSITIONS = []
+NUM_COLORS = 1
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
@@ -49,7 +51,7 @@ class GameObject:
     is_kitten = False
     description = ""
     character = ''
-    color = 0
+    color = random.randint(1,NUM_COLORS)
     def __init__(self, pos_x, pos_y, is_kitten_input, description_input, character_input, color_input):
         self.x = pos_x
         self.y = pos_y
@@ -146,8 +148,10 @@ def gameloop(stdscr, game_window, title_window, player):
     game_on = True
     turns_left = MAX_TURNS
 
-    update_message(title_window, "", turns_left)
+    # Set up the UI and the game board
+    update_message(title_window, WELCOME_MESSAGE, turns_left)
     draw_board(game_window)
+    game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.A_BLINK)
 
     while game_on:
         p_input = game_window.getch()
@@ -162,8 +166,8 @@ def gameloop(stdscr, game_window, title_window, player):
             update_message(title_window, "", turns_left)
             # Move the player, update the graphic behind them
             result = player.move_player(p_input)
-            game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.A_BLINK)
             game_window.addch(prev_y, prev_x, '.')
+            game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.A_BLINK)
 
             # If we have collided with something, display the message
             if result is not None:
@@ -191,7 +195,7 @@ def draw_board(game_window):
             found = False
             for obj in GAME_OBJECTS:
                 if obj.x == j and obj.y == i:
-                    game_window.addch(i,j, obj.character)
+                    game_window.addch(i,j, obj.character, curses.color_pair(obj.color))
                     found = True
                     break
             if found == False:
@@ -214,6 +218,18 @@ def collision_check(x, y):
             return (True, obj)
     return (False, None)
 
+def setup_colors():
+    curses.start_color()
+    # 0:black, 1:red, 2:green, 3:yellow, 4:blue, 5:magenta, 6:cyan, and 7:white
+    NUM_COLORS = 6
+    if curses.has_colors():
+        curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+        curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
+        curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+        curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
+        # curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_WHITE)
+        curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK)
+        curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
 
 # |-----------------------------------------------------------------------------------------------------------------|
 def main(stdscr):
@@ -222,11 +238,11 @@ def main(stdscr):
         return
     # Setup  
     player = Player()
+    setup_colors()
     generate_objects()
     curses.curs_set(0)
     title_window = curses.newwin(2, MAX_X, 0, 0)
     game_window = curses.newwin(MAX_Y, BOARD_X+1, 2, 0)
-
     gameloop(stdscr, game_window, title_window, player)
     curses.endwin()
 
