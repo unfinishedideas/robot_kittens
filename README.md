@@ -39,7 +39,7 @@ For the player experience I was going for a fairly faithful adaptation of the or
 
 ### ***Question 2: What choices can you make in objects to enhance this experience? This could include the object's symbol as well as its description***
 
-For objects I decided to add variation in the colors displayed to give players a way to remember which objects they have already interacted with. In addition, I decided to add dynamic colors so players can tell which objects they have visited to not waste time going back to them.
+I decided to add variation in the colors displayed for the objects to entice players to seek out the objects. In addition, I decided to add a unique "visited" color and graphic so players can tell which objects they have visited and visualize their progress through the game. (with the added benefit that they will not waste their time going back to previously seen objects)
 
 <br>
 
@@ -47,7 +47,7 @@ For objects I decided to add variation in the colors displayed to give players a
 
 ### ***Question 3: What one small and simple enhancement to the game mechanics might enhance the experience you are trying to provide?***
 
-To increase the stakes a bit and add to the strategic element I was going for; adding a turn counter was a good way to go. This means that players will have to strategize so that they have enough turns left to find the kitten and the potential for a game over now exists.
+To increase the stakes a bit and add to the strategic element I was going for; I decided to add a turn counter and a limited number of turns. This means that players will have to strategize so that they have enough turns left to find the kitten. It also adds the potential for a game over which should incentivize them to play more strategically.
 
 <br>
 
@@ -55,7 +55,7 @@ To increase the stakes a bit and add to the strategic element I was going for; a
 
 ### ***Question 4: How confident are you that your game is (relatively) bug-free?***
 
-I am semi-confident that the game is mostly bug free based on my testing. Though there are a few undesired behaviors such as turns decrementing when visiting the same object twice. I believe the game was also not created in a way that is not the most efficient but that's mainly due to my inexperience with the curses api and game programming in general.
+I am semi-confident that the game is mostly (critical) bug free based on my testing. Though there are a few undesired behaviors such as turns decrementing when visiting the same object twice. I also believe the game was also not created in a way that is not the most efficient but that's mainly due to my inexperience with the curses api and game programming in general. More testing is required to push the limits of the game though.
 
 <br>
 
@@ -63,7 +63,7 @@ I am semi-confident that the game is mostly bug free based on my testing. Though
 
 ### ***Question 5: What was the playtester's experience? Did it match your expectations?***
 
-The playtesters I showed the game to enjoyed their time. I could tell that adding the timer created a little bit of tension as they searched for the kitten. But they also found the various object descriptions funny which think matched the goofy yet tense experience that I was going for. Though I did observe some mild confusion with starting a game and they weren't sure which character they were as well as the controls (They are WASD so I think the confusion was mainly due to the fact they do not play many computer games).
+The playtesters I showed the game to enjoyed their time. I could tell that adding the timer created a little bit of tension as they searched for the kitten. But they also found the various object descriptions funny which I think matched the goofy yet tense experience that I was going for. Though I did observe some mild confusion with starting a game as they weren't sure which character they were and they took a minute to understand the controls (Controls are WASD so I think the confusion was mainly due to the fact they do not play many computer games). Things like this that I take for granted as the sole person working on this game helped to demonstrate the value of playtesting.
 
 <br>
 
@@ -71,7 +71,7 @@ The playtesters I showed the game to enjoyed their time. I could tell that addin
 
 ### ***Question 6: How does all this correlate with what you've read so far in The Book?***
 
-I think I was lucky with how this related to the book. In it, they talk about how everyone will have a different experience with your game and that part of the process is to take their experience and the desired experience and then bridge the gap between them. But here I think I was able to reach the playtesters with the desired experience; though watered down due to the limitations of the art style. I imagine if I had time to playtest with a broader range of players the flaws in the design would become more apparent. I feel that the experience I was going for, while there, is not quite vivid enough and could have been further emphasized with graphics, sound, and the game design decisions that come with that.
+I found it interesting to look at the idea of individual experiences in terms of game design. In the book, they talk about how everyone will have a different experience with your game and that part of the process is to take their experience and the desired experience and then bridge the gap between them. For this game, I think I was able to reach the playtesters with the desired experience. Though I also felt that it was watered down due to the limitations of the presentation style. I imagine if I had time to playtest with a broader range of players the gap in experiences between what I was trying to achieve and what the players experienced would become clearer. As is, while the experience I was going for was there, it is not quite vivid enough and could have been further emphasized with graphics, sound, and the game design decisions that come with that. I quite enjoyed viewing their reactions to my game and am looking forward to utilizing playtesting more often to really hone in on specific experiences in game design.
 
 <br>
 
@@ -79,7 +79,7 @@ I think I was lucky with how this related to the book. In it, they talk about ho
 
 ### ***Question 7: What would a "AAA" version of your game look like? Is what you have done here helpful in visualizing that? Is the playtesting you've done relevant?***
 
-A AAA version of this game would look quite a bit different I imagine. Instead of simply having different text descriptions of the objects I imagine they would have full 3D graphics and interesting level design as well as real-time controls and timers. They would be able to sprinkle clues throughout the environment to point the player in the right direction. Done well I think it could be a fun game; especially if they are able to keep the randomized levels. The core gameplay of finding goofy items on your search for the kitten is there but I think there would be a lot of ways to enhance the experience for the player in a AAA title. I feel like the playtesting done for this project may be helpful in some ways, but the experience would be so much richer in a AAA title that the testing here would overall not be relevant to that version of the game.
+A AAA version of this game would look quite a bit different I imagine. Instead of simply having different text descriptions of the objects I imagine they would have full 3D graphics and interesting level design as well as real-time controls and timers. They would be able to sprinkle clues throughout the environment to point the player in the right direction and maybe even include a fog of war. Done well I think it could be a fun game; especially if they are able to keep the randomized levels. The core gameplay of finding goofy items on your search for the kitten is there but I think there would be a lot of ways to enhance the experience for the player in a AAA title. I feel like the playtesting done for this project may be helpful in some ways, but the experience would be so much richer in a AAA title that the testing here would overall not be relevant to that version of the game.
 
 <br>
 
