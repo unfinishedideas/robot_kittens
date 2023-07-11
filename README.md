@@ -18,7 +18,7 @@ Use W,A,S,D to move the robot and try to find the kitten! Press q to quit
 
 This is a game designed to run in the command prompt / terminal. In order to play this game, you will need both Python and the Curses library installed on your machine.
 
-First, download the latest [Python distribution](https://www.python.org/downloads/) and install it on your machine.
+First, download the latest [Python distribution](https://www.python.org/downloads/) and install it on your machine. When installing on Windows, be sure to check "add Python to PATH" box in the install wizard.
 
 On some systems this is all the setup you need. On Windows, however, Python does not natively support the required `curses` library by default. If you are on a machine that already has the python curses library installed, then you should be able to skip this step. If you are on Windows, however, you will need to install windows-curses by doing the following:
 
