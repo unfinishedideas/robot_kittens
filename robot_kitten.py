@@ -14,8 +14,8 @@ MAX_X = 100
 MAX_Y = 24
 BOARD_X = 40
 BOARD_Y = 22
-NUM_OBJECTS = 5
-MAX_TURNS = 100
+NUM_OBJECTS = 10
+MAX_TURNS = 120
 GAME_OBJECTS = []
 DESCRIPTIONS = [
     "Hi there, I'm an object of some kind", 
@@ -29,10 +29,11 @@ DESCRIPTIONS = [
     "This block contains a lawsuit from Nintendo of America", 
     "It's Radioactive Man. Up and atom!"
 ]
-KITTEN_DESCRIPTION = "Hooray! You've found the Kitten. Congratulations on completing the game successfully"
+KITTEN_DESCRIPTION = "Hooray! You've found the Kitten. Congratulations!"
 GAME_OVER_TEXT = "GAME OVER. You ran out of turns :("
 WELCOME_MESSAGE = "Welcome! You are the #. Use WASD to find the kitten! Press q at any time to quit"
 ROBOT_GRAPHIC = '#'
+ROBOT_COLOR = 8
 KEY_UP = 'w'
 KEY_DOWN = 's'
 KEY_LEFT = 'a'
@@ -151,7 +152,7 @@ def gameloop(stdscr, game_window, title_window, player):
     # Set up the UI and the game board
     update_message(title_window, WELCOME_MESSAGE, turns_left)
     draw_board(game_window)
-    game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.A_BLINK)
+    game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.color_pair(ROBOT_COLOR))
 
     while game_on:
         p_input = game_window.getch()
@@ -167,7 +168,7 @@ def gameloop(stdscr, game_window, title_window, player):
             # Move the player, update the graphic behind them
             result = player.move_player(p_input)
             game_window.addch(prev_y, prev_x, '.')
-            game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.A_BLINK)
+            game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.color_pair(ROBOT_COLOR))
 
             # If we have collided with something, display the message
             if result is not None:
@@ -221,15 +222,19 @@ def collision_check(x, y):
 def setup_colors():
     curses.start_color()
     # 0:black, 1:red, 2:green, 3:yellow, 4:blue, 5:magenta, 6:cyan, and 7:white
-    NUM_COLORS = 6
+    # We do 1 less because color 8 is reserved for the robot
+    NUM_COLORS = 7
+    ROBOT_COLOR = 8
     if curses.has_colors():
         curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
         curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
         curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
         curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
-        # curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_WHITE)
+        curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
         curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK)
         curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
+        # Color pair for the Robot graphic vvv
+        curses.init_pair(8, curses.COLOR_BLACK, curses.COLOR_CYAN)
 
 # |-----------------------------------------------------------------------------------------------------------------|
 def main(stdscr):
