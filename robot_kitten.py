@@ -34,6 +34,8 @@ GAME_OVER_TEXT = "GAME OVER. You ran out of turns :("
 WELCOME_MESSAGE = "Welcome! You are the #. Use WASD to find the kitten! Press q at any time to quit"
 ROBOT_GRAPHIC = '#'
 ROBOT_COLOR = 8
+VISITED_COLOR = 9
+KITTEN_COLOR = 10
 KEY_UP = 'w'
 KEY_DOWN = 's'
 KEY_LEFT = 'a'
@@ -67,7 +69,7 @@ class GameObject:
             print(f"Display Message: {self.description}\n")
     
     def get_interaction(self):
-        return(self.description, self.is_kitten)
+        return(self.description, self.is_kitten, self.x, self.y, self.character)
 
 
 # |-----------------------------------------------------------------------------------------------------------------|
@@ -175,8 +177,17 @@ def gameloop(stdscr, game_window, title_window, player):
                 update_message(title_window, result[0], turns_left)
                 # If the kitten was found, you win!
                 if result[1] == True:
+                    game_window.addch(result[3], result[2], 'O', curses.color_pair(KITTEN_COLOR))
+                    game_window.addch(result[3]+1, result[2], 'O', curses.color_pair(KITTEN_COLOR))
+                    game_window.addch(result[3]-1, result[2], 'O', curses.color_pair(KITTEN_COLOR))
+                    game_window.addch(result[3], result[2]+1, 'O', curses.color_pair(KITTEN_COLOR))
+                    game_window.addch(result[3], result[2]-1, 'O', curses.color_pair(KITTEN_COLOR))
+                    game_window.refresh()
                     curses.napms(4000)
                     game_on = False
+                else:
+                    # Change the object's graphic to a visited one
+                    game_window.addch(result[3], result[2], 'x', curses.color_pair(VISITED_COLOR))
 
             # Decrement Turn counter and check for game over
             turns_left -= 1
@@ -233,8 +244,13 @@ def setup_colors():
         curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
         curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK)
         curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
-        # Color pair for the Robot graphic vvv
+        # Color pair for the Robot graphic
         curses.init_pair(8, curses.COLOR_BLACK, curses.COLOR_CYAN)
+        # Color pair for visited objects
+        curses.init_pair(9, curses.COLOR_BLACK, curses.COLOR_WHITE)
+        # Color pair for kitten
+        curses.init_pair(10, curses.COLOR_BLUE, curses.COLOR_GREEN)
+
 
 # |-----------------------------------------------------------------------------------------------------------------|
 def main(stdscr):
