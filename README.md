@@ -20,7 +20,7 @@ This is a game designed to run in the command prompt / terminal. In order to pla
 
 First, download the latest [Python distribution](https://www.python.org/downloads/) and install it on your machine.
 
-On some systems this is all the setup you need. On Windows, however, Python does not natively support the required `curses` library by default. If you are on a machine that already has the python curses library installed, then you should be able to skip this step. If you are on Windows, you will need to install windows-curses by doing the following:
+On some systems this is all the setup you need. On Windows, however, Python does not natively support the required `curses` library by default. If you are on a machine that already has the python curses library installed, then you should be able to skip this step. If you are on Windows, however, you will need to install windows-curses by doing the following:
 
 - run `pip install -r requirements.txt` from the command line inside the directory OR
 - run `pip install windows-curses`
@@ -63,7 +63,7 @@ I am semi-confident that the game is mostly bug free based on my testing. Though
 
 ### ***Question 5: What was the playtester's experience? Did it match your expectations?***
 
-The playtesters I showed the game to enjoyed their time. I could tell that adding the timer created a little bit of tension as they searched for the kitten. But they also found the various object descriptions funny which think matched the goofy yet tense experience that I was going for. Though I did observe some mild confusion with starting a game and they weren't sure which character they were as well as the controls (They are WSAD so I think the confusion was mainly due to the fact they do not play many computer games).
+The playtesters I showed the game to enjoyed their time. I could tell that adding the timer created a little bit of tension as they searched for the kitten. But they also found the various object descriptions funny which think matched the goofy yet tense experience that I was going for. Though I did observe some mild confusion with starting a game and they weren't sure which character they were as well as the controls (They are WASD so I think the confusion was mainly due to the fact they do not play many computer games).
 
 <br>
 
@@ -71,7 +71,7 @@ The playtesters I showed the game to enjoyed their time. I could tell that addin
 
 ### ***Question 6: How does all this correlate with what you've read so far in The Book?***
 
-
+I think I was lucky with how this related to the book. In it, they talk about how everyone will have a different experience with your game and that part of the process is to take their experience and the desired experience and then bridge the gap between them. But here I think I was able to reach the playtesters with the desired experience; though watered down due to the limitations of the art style. I imagine if I had time to playtest with a broader range of players the flaws in the design would become more apparent. I feel that the experience I was going for, while there, is not quite vivid enough and could have been further emphasized with graphics, sound, and the game design decisions that come with that.
 
 <br>
 
@@ -79,7 +79,7 @@ The playtesters I showed the game to enjoyed their time. I could tell that addin
 
 ### ***Question 7: What would a "AAA" version of your game look like? Is what you have done here helpful in visualizing that? Is the playtesting you've done relevant?***
 
-A AAA version of this game would look quite a bit different I imagine. Instead of simply having different text descriptions of t he objects I imagine they would have full 3D graphics and interesting level design as well as real-time controls and timers. The core gameplay of finding goofy objects and 
+A AAA version of this game would look quite a bit different I imagine. Instead of simply having different text descriptions of the objects I imagine they would have full 3D graphics and interesting level design as well as real-time controls and timers. They would be able to sprinkle clues throughout the environment to point the player in the right direction. Done well I think it could be a fun game; especially if they are able to keep the randomized levels. The core gameplay of finding goofy items on your search for the kitten is there but I think there would be a lot of ways to enhance the experience for the player in a AAA title. I feel like the playtesting done for this project may be helpful in some ways, but the experience would be so much richer in a AAA title that the testing here would overall not be relevant to that version of the game.
 
 <br>
 
