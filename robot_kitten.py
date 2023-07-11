@@ -201,7 +201,7 @@ def gameloop(stdscr, game_window, title_window, player):
             # Decrement Turn counter and check for game over
             turns_left -= 1
             if turns_left < 0:
-                update_message(title_window, GAME_OVER_TEXT, 0)
+                update_message(title_window, GAME_OVER_TEXT, 0, 7)
                 curses.napms(4000)
                 game_on = False
         game_window.refresh()
