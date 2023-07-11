@@ -12,7 +12,7 @@ This is a simple Robot Finds Kitten style terminal game written in Python using 
 
 ## Controls
 
-Use W,A,S,D to move, and try to find the kitten! Press q to quit
+Use W,A,S,D to move the robot and try to find the kitten! Press q to quit
 
 ## Setup / Running
 
