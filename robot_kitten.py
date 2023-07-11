@@ -18,16 +18,23 @@ NUM_OBJECTS = 10
 MAX_TURNS = 120
 GAME_OBJECTS = []
 DESCRIPTIONS = [
-    "Hi there, I'm an object of some kind", 
-    "You found a D20!", 
-    "That's a bar of soap", 
+    "Hi there, I'm an object of some kind.", 
+    "You found a mysterious D20! You rolled a 1.", 
+    "That's a bar of soap.", 
     "Golly Gee that's Mr T!", 
-    "This is a very expensive microphone", 
+    "This is a very expensive microphone.", 
     "That's a drumset. Ba-dum tish!", 
     "Congratulations, you've found yourself :)", 
     "Oh no, the Flying Spaghetti Monster! RUN!", 
-    "This block contains a lawsuit from Nintendo of America", 
-    "It's Radioactive Man. Up and atom!"
+    "This block contains a lawsuit from Nintendo of America.", 
+    "It's Radioactive Man. Up and atom!",
+    "It's a big box of la croix.",
+    "It's a half eaten sandwhich, pretty tasty!",
+    "You found one of Taylor Swift's ex boyfriends.",
+    "You slipped on a banana peel!",
+    "You found an adult cat! Too bad we want to find kittens.",
+    "It's a copy of Earthbound for the Super Famicom.",
+    "This is a Dungeons and Dragons rulebook. It's covered in cheeto dust."
 ]
 KITTEN_DESCRIPTION = "Hooray! You've found the Kitten. Congratulations!"
 GAME_OVER_TEXT = "GAME OVER. You ran out of turns :("
@@ -40,7 +47,10 @@ KEY_UP = 'w'
 KEY_DOWN = 's'
 KEY_LEFT = 'a'
 KEY_RIGHT = 'd'
+
 DEBUG = False
+DEBUG_KITTEN_X = 1
+DEBUG_KITTEN_Y = 1
 
 # Important game-state globals, do not change!
 CHOSEN_POSITIONS = []
@@ -123,10 +133,10 @@ def generate_objects():
         GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], False, description, generate_graphic(), random.randint(1,6)))
 
     # Add Kitten
-    new_position = find_valid_coordinate()
     if DEBUG == True:
-        GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, "K", random.randint(1,6)))
+        GAME_OBJECTS.append(GameObject(DEBUG_KITTEN_X, DEBUG_KITTEN_Y, True, KITTEN_DESCRIPTION, "K", random.randint(1,6)))
     else:
+        new_position = find_valid_coordinate()
         GAME_OBJECTS.append(GameObject(new_position[0], new_position[1], True, KITTEN_DESCRIPTION, generate_graphic(), random.randint(1,6)))
 
 
@@ -142,6 +152,8 @@ def find_valid_coordinate():
         temp_x = random.randint(1, BOARD_X -1)
         temp_y = random.randint(1, BOARD_Y - 1)
         if (temp_x, temp_y) not in CHOSEN_POSITIONS:
+            if DEBUG and temp_x == DEBUG_KITTEN_X and temp_y == DEBUG_KITTEN_Y:
+                continue
             CHOSEN_POSITIONS.append((temp_x, temp_y))
             return (temp_x, temp_y)
 
@@ -174,19 +186,16 @@ def gameloop(stdscr, game_window, title_window, player):
 
             # If we have collided with something, display the message
             if result is not None:
-                update_message(title_window, result[0], turns_left)
                 # If the kitten was found, you win!
                 if result[1] == True:
-                    game_window.addch(result[3], result[2], 'O', curses.color_pair(KITTEN_COLOR))
-                    game_window.addch(result[3]+1, result[2], 'O', curses.color_pair(KITTEN_COLOR))
-                    game_window.addch(result[3]-1, result[2], 'O', curses.color_pair(KITTEN_COLOR))
-                    game_window.addch(result[3], result[2]+1, 'O', curses.color_pair(KITTEN_COLOR))
-                    game_window.addch(result[3], result[2]-1, 'O', curses.color_pair(KITTEN_COLOR))
+                    update_message(title_window, result[0], turns_left, 2)
+                    draw_win(game_window, result[2], result[3])
                     game_window.refresh()
                     curses.napms(4000)
                     game_on = False
                 else:
                     # Change the object's graphic to a visited one
+                    update_message(title_window, result[0], turns_left)
                     game_window.addch(result[3], result[2], 'x', curses.color_pair(VISITED_COLOR))
 
             # Decrement Turn counter and check for game over
@@ -196,6 +205,28 @@ def gameloop(stdscr, game_window, title_window, player):
                 curses.napms(4000)
                 game_on = False
         game_window.refresh()
+
+
+def draw_win(game_window, pos_x, pos_y):
+    top = pos_y + 1
+    bottom = pos_y - 1
+    right = pos_x + 1
+    left = pos_x - 1
+
+    if top > BOARD_Y:
+        top = pos_y
+    if right > BOARD_X:
+        right = pos_x
+    if bottom < 0:
+        bottom = 0
+    if left < 0:
+        left = 0
+
+    game_window.addch(pos_y, pos_x, 'O', curses.color_pair(KITTEN_COLOR))
+    game_window.addch(top, pos_x, 'O', curses.color_pair(KITTEN_COLOR))
+    game_window.addch(bottom, pos_x, 'O', curses.color_pair(KITTEN_COLOR))
+    game_window.addch(pos_y, right, 'O', curses.color_pair(KITTEN_COLOR))
+    game_window.addch(pos_y, left, 'O', curses.color_pair(KITTEN_COLOR))
 
 
 def draw_board(game_window):
@@ -216,10 +247,10 @@ def draw_board(game_window):
     game_window.refresh()
 
 
-def update_message(title_window, string, turns_left):
+def update_message(title_window, string, turns_left, color=1):
     title_window.erase()
     title_window.addstr(0,0, f"Robot Finds Kitten. Turns left [{turns_left}]")
-    title_window.addstr(1,0, string)
+    title_window.addstr(1,0, string, curses.color_pair(color))
     title_window.refresh()
 
 
@@ -236,13 +267,13 @@ def setup_colors():
     # We do 1 less because color 8 is reserved for the robot
     NUM_COLORS = 7
     ROBOT_COLOR = 8
-    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(1, curses.COLOR_WHITE, curses.COLOR_BLACK)
     curses.init_pair(2, curses.COLOR_GREEN, curses.COLOR_BLACK)
     curses.init_pair(3, curses.COLOR_YELLOW, curses.COLOR_BLACK)
     curses.init_pair(4, curses.COLOR_BLUE, curses.COLOR_BLACK)
     curses.init_pair(5, curses.COLOR_MAGENTA, curses.COLOR_BLACK)
     curses.init_pair(6, curses.COLOR_CYAN, curses.COLOR_BLACK)
-    curses.init_pair(7, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    curses.init_pair(7, curses.COLOR_RED, curses.COLOR_BLACK)
     # Color pair for the Robot graphic
     curses.init_pair(8, curses.COLOR_BLACK, curses.COLOR_CYAN)
     # Color pair for visited objects
