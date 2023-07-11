@@ -110,8 +110,8 @@ class Player:
             temp_x = BOARD_X - 1
         if temp_y < 1:
             temp_y = 1
-        elif temp_y > BOARD_Y -1:
-            temp_y = BOARD_Y - 1
+        elif temp_y > BOARD_Y:
+            temp_y = BOARD_Y
 
         # Check for object collision
         result = collision_check(temp_x, temp_y)
@@ -232,7 +232,7 @@ def draw_win(game_window, pos_x, pos_y):
 def draw_board(game_window):
     game_window.erase()
     game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
-    for i in range(1, BOARD_Y):
+    for i in range(1, BOARD_Y + 1):
         for j in range(1, BOARD_X):
             # check for object at coord
             found = False
