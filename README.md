@@ -1,6 +1,6 @@
-# Homework #1 Robot Finds Kitten
+# Robot Finds Kitten, Peter Wells
 
-## Peter Wells, CS-510, Computer Game Design
+## CS-510, Computer Game Design, Homework #1
 
 ## 2023/07/09
 
@@ -8,23 +8,24 @@
 
 ## About
 
-This is a simple Robot Finds Kitten style game written in Python using the Curses library.
+This is a simple Robot Finds Kitten style terminal game written in Python using the Curses library.
 
 ## Controls
 
 Use W,A,S,D to move, and try to find the kitten! Press q to quit
 
-## Setup
+## Setup / Running
 
-Unfortunately, the Windows version of Python does not support the required `curses` library by default. If you are on Windows, you will need to install windows-curses to do so simply do the following:
+This is a game designed to run in the command prompt / terminal. In order to play this game, you will need both Python and the Curses library installed on your machine.
+
+First, download the latest [Python distribution](https://www.python.org/downloads/) and install it on your machine.
+
+On some systems this is all the setup you need. On Windows, however, Python does not natively support the required `curses` library by default. If you are on a machine that already has the python curses library installed, then you should be able to skip this step. If you are on Windows, you will need to install windows-curses by doing the following:
 
 - run `pip install -r requirements.txt` from the command line inside the directory OR
-- Just run `pip install windows-curses`
+- run `pip install windows-curses`
 
-## Potential DLC
-
-- Hide the objects and map from player so they have to search in the dark
-- Add ASCII art kitty win screen
+Once ready, run the program with `python .\robot_kitten.py`
 
 ## Homework Questions
 
@@ -46,7 +47,7 @@ For objects I decided to add variation in the colors displayed to give players a
 
 ### ***Question 3: What one small and simple enhancement to the game mechanics might enhance the experience you are trying to provide?***
 
-To increase the stakes a bit and add to the strategic element I was going for; adding a turn counter is a good way to go. This means that players will have to strategize so that they have enough turns left to find the kitten.
+To increase the stakes a bit and add to the strategic element I was going for; adding a turn counter was a good way to go. This means that players will have to strategize so that they have enough turns left to find the kitten and the potential for a game over now exists.
 
 <br>
 
@@ -54,7 +55,7 @@ To increase the stakes a bit and add to the strategic element I was going for; a
 
 ### ***Question 4: How confident are you that your game is (relatively) bug-free?***
 
-I am fairly certain it is mostly bug free based on my testing. Though I do believe it is created in a way that is not the most efficient.
+I am semi-confident that the game is mostly bug free based on my testing. Though there are a few undesired behaviors such as turns decrementing when visiting the same object twice. I believe the game was also not created in a way that is not the most efficient but that's mainly due to my inexperience with the curses api and game programming in general.
 
 <br>
 
@@ -62,7 +63,7 @@ I am fairly certain it is mostly bug free based on my testing. Though I do belie
 
 ### ***Question 5: What was the playtester's experience? Did it match your expectations?***
 
-
+The playtesters I showed the game to enjoyed their time. I could tell that adding the timer created a little bit of tension as they searched for the kitten. But they also found the various object descriptions funny which think matched the goofy yet tense experience that I was going for. Though I did observe some mild confusion with starting a game and they weren't sure which character they were as well as the controls (They are WSAD so I think the confusion was mainly due to the fact they do not play many computer games).
 
 <br>
 
@@ -78,14 +79,20 @@ I am fairly certain it is mostly bug free based on my testing. Though I do belie
 
 ### ***Question 7: What would a "AAA" version of your game look like? Is what you have done here helpful in visualizing that? Is the playtesting you've done relevant?***
 
-
+A AAA version of this game would look quite a bit different I imagine. Instead of simply having different text descriptions of t he objects I imagine they would have full 3D graphics and interesting level design as well as real-time controls and timers. The core gameplay of finding goofy objects and 
 
 <br>
 
 ---
 
+## Potential Future Developments
+
+- Hide the objects and map from player so they have to search in the dark (fog of war)
+- Add ASCII art kitty win screen
+
+
 ## References
 
 - [Python Curses](https://docs.python.org/3/howto/curses.html)
-- [NCurses](http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/NCURSES-Programming-HOWTO.html#WHATIS)
 - [Curses Programming in Python](https://www.devdungeon.com/content/curses-programming-python)
+- [NCurses Programming HOWTO](http://www.ibiblio.org/pub/Linux/docs/HOWTO/other-formats/html_single/NCURSES-Programming-HOWTO.html#WHATIS)
