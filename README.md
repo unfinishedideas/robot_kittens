@@ -12,7 +12,7 @@ This is a simple Robot Finds Kitten style game written in Python using the Curse
 
 ## Controls
 
-Use W,A,S,D to move, and try to find the kitten!
+Use W,A,S,D to move, and try to find the kitten! Press q to quit
 
 ## Setup
 
@@ -30,7 +30,7 @@ Unfortunately, the Windows version of Python does not support the required `curs
 
 ### ***Question 1: Pick a player experience and feeling to target for this simple game. For example, you might want to make it energizing instead of zenlike, make it a hard grind or a quick jaunt, etc.***
 
-For the player experience I was going for a fairly faithful adaptation of the original but with an added sense of urgency and strategy. I wanted to make sure I kept some of the goofy charm of finding random objects but create a strategic element to the game.
+For the player experience I was going for a fairly faithful adaptation of the original but with an added sense of urgency and strategy. I wanted to make sure I kept some of the goofy charm of finding random objects but create a strategic element to the game   .
 
 <br>
 

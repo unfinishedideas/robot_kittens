@@ -15,6 +15,7 @@ MAX_Y = 24
 BOARD_X = 40
 BOARD_Y = 22
 NUM_OBJECTS = 5
+MAX_TURNS = 100
 GAME_OBJECTS = []
 DESCRIPTIONS = [
     "Hi there, I'm an object of some kind", 
@@ -143,31 +144,60 @@ def find_valid_coordinate():
 # |-----------------------------------------------------------------------------------------------------------------|
 def gameloop(stdscr, game_window, title_window, player):
     game_on = True
-    # game_window.refresh()
-    # title_window.refresh()
-    # draw_board(game_window, player)
-    turns_left = 100
+    turns_left = MAX_TURNS
 
-    while game_on == True:
-        input = stdscr.getch()
-        if input == ord('q'):
+    update_message(title_window, "", turns_left)
+    draw_board(game_window)
+
+    while game_on:
+        p_input = game_window.getch()
+        prev_x = player.x
+        prev_y = player.y
+
+        # Either we're quitting...
+        if p_input == ord('q'):
             game_on = False
+        # Or it's a new turn!
         else:
             update_message(title_window, "", turns_left)
-            result = player.move_player(input)
+            # Move the player, update the graphic behind them
+            result = player.move_player(p_input)
+            game_window.addch(player.y, player.x, ROBOT_GRAPHIC, curses.A_BLINK)
+            game_window.addch(prev_y, prev_x, '.')
+
+            # If we have collided with something, display the message
             if result is not None:
                 update_message(title_window, result[0], turns_left)
-                # If kitten found, you win!
+                # If the kitten was found, you win!
                 if result[1] == True:
                     curses.napms(4000)
                     game_on = False
 
-            draw_board(game_window, player)
+            # Decrement Turn counter and check for game over
             turns_left -= 1
             if turns_left < 0:
                 update_message(title_window, GAME_OVER_TEXT, 0)
                 curses.napms(4000)
                 game_on = False
+        game_window.refresh()
+
+
+def draw_board(game_window):
+    game_window.erase()
+    game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
+    for i in range(1, BOARD_Y):
+        for j in range(1, BOARD_X):
+            # check for object at coord
+            found = False
+            for obj in GAME_OBJECTS:
+                if obj.x == j and obj.y == i:
+                    game_window.addch(i,j, obj.character)
+                    found = True
+                    break
+            if found == False:
+                game_window.addch(i, j, '.')
+
+    game_window.refresh()
 
 
 def update_message(title_window, string, turns_left):
@@ -175,25 +205,6 @@ def update_message(title_window, string, turns_left):
     title_window.addstr(0,0, f"Robot Finds Kitten. Turns left [{turns_left}]")
     title_window.addstr(1,0, string)
     title_window.refresh()
-
-
-def draw_board(game_window, player):
-    for i in range(1, BOARD_Y):
-        for j in range(1, BOARD_X):
-            # check for player at coord
-            if player.x == j and player.y == i:
-                game_window.addch(i,j,ROBOT_GRAPHIC, curses.A_BLINK)
-            else:
-                # check for object at coord
-                found = False
-                for obj in GAME_OBJECTS:
-                    if obj.x == j and obj.y == i:
-                        game_window.addch(i,j, obj.character)
-                        found = True
-                        break
-                if found == False:
-                    game_window.addch(i, j, '.')
-    game_window.refresh()
 
 
 def collision_check(x, y):
@@ -213,10 +224,9 @@ def main(stdscr):
     player = Player()
     generate_objects()
     curses.curs_set(0)
-    title_window = curses.newwin(2, MAX_X,0,0)
-    game_window = curses.newwin(MAX_Y, BOARD_X+1,2,0)
-    game_window.border('|', '|', '-', '-', '+', '+', '+', '+')
-    update_message(title_window, "", 0)
+    title_window = curses.newwin(2, MAX_X, 0, 0)
+    game_window = curses.newwin(MAX_Y, BOARD_X+1, 2, 0)
+
     gameloop(stdscr, game_window, title_window, player)
     curses.endwin()
 
