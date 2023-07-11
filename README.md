@@ -30,7 +30,7 @@ Unfortunately, the Windows version of Python does not support the required `curs
 
 ### ***Question 1: Pick a player experience and feeling to target for this simple game. For example, you might want to make it energizing instead of zenlike, make it a hard grind or a quick jaunt, etc.***
 
-For the player experience I was going for a fairly faithful adaptation of the original but with an added sense of urgency and strategy. I wanted to make sure I kept some of the goofy charm of finding random objects but create a strategic element to the game   .
+For the player experience I was going for a fairly faithful adaptation of the original but with an added sense of urgency and strategy. I wanted to make sure I kept some of the goofy charm of finding random objects but create a strategic element to the game.
 
 <br>
 
@@ -38,7 +38,7 @@ For the player experience I was going for a fairly faithful adaptation of the or
 
 ### ***Question 2: What choices can you make in objects to enhance this experience? This could include the object's symbol as well as its description***
 
-For objects I decided to add variation in the colors displayed as well as using randomized symbols to add to the confusing nature of the hunt for the kitten.
+For objects I decided to add variation in the colors displayed to give players a way to remember which objects they have already interacted with. In addition, I decided to add dynamic colors so players can tell which objects they have visited to not waste time going back to them.
 
 <br>
 
@@ -46,7 +46,7 @@ For objects I decided to add variation in the colors displayed as well as using 
 
 ### ***Question 3: What one small and simple enhancement to the game mechanics might enhance the experience you are trying to provide?***
 
-To increase the stakes a bit and add to the strategic element I was going for; adding a turn counter is a good way to go. This means that players will have to remember what objects they have already visited and strategize so that they have enough turns left to visit the other objects and hopefully in the kitten.
+To increase the stakes a bit and add to the strategic element I was going for; adding a turn counter is a good way to go. This means that players will have to strategize so that they have enough turns left to find the kitten.
 
 <br>
 
@@ -62,17 +62,23 @@ I am fairly certain it is mostly bug free based on my testing. Though I do belie
 
 ### ***Question 5: What was the playtester's experience? Did it match your expectations?***
 
+
+
 <br>
 
 ---
 
 ### ***Question 6: How does all this correlate with what you've read so far in The Book?***
 
+
+
 <br>
 
 ---
 
 ### ***Question 7: What would a "AAA" version of your game look like? Is what you have done here helpful in visualizing that? Is the playtesting you've done relevant?***
+
+
 
 <br>
 
