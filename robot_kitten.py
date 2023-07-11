@@ -182,17 +182,17 @@ def draw_board(game_window, player):
         for j in range(1, BOARD_X):
             # check for player at coord
             if player.x == j and player.y == i:
-                game_window.addstr(i,j,ROBOT_GRAPHIC, curses.A_BLINK)
+                game_window.addch(i,j,ROBOT_GRAPHIC, curses.A_BLINK)
             else:
                 # check for object at coord
                 found = False
                 for obj in GAME_OBJECTS:
                     if obj.x == j and obj.y == i:
-                        game_window.addstr(i,j, obj.character)
+                        game_window.addch(i,j, obj.character)
                         found = True
                         break
                 if found == False:
-                    game_window.addstr(i, j, '.')
+                    game_window.addch(i, j, '.')
     game_window.refresh()
 
 
